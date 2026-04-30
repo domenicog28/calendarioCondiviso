@@ -1,0 +1,13 @@
+package com.domenico.calendarioCondiviso;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class CalendarioCondivisoApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
