@@ -1,4 +1,4 @@
-package com.domenico.calendarioCondiviso;
+package com.webapp.calendarioCondiviso;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
