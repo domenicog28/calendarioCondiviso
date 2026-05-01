@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.webapp.calendarioCondiviso.evento.Evento;
 import com.webapp.calendarioCondiviso.utente.Utente;
 
 import jakarta.persistence.Column;
@@ -41,13 +42,16 @@ public class Organizzazione {
 	@Column(nullable=false)
 	private String descrizione;
 	
-	private boolean verificata;
+	private boolean verificata = false;
 	
 	private int tokenVerifica;
 	
 	private ZonedDateTime scadenzaToken;
 	
 	
-	@OneToMany (mappedBy ="organizzazione", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy ="organizzazione", fetch=FetchType.LAZY)
 	private List<Utente> utenti;
+	
+	@OneToMany(mappedBy ="organizzazione", fetch=FetchType.LAZY)
+	private List<Evento> eventi;
 }
