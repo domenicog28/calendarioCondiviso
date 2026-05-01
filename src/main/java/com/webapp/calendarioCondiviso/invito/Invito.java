@@ -16,15 +16,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /*CREATE TABLE invito(id_token UUID PRIMARY KEY, id_organizzazione UUID NOT NULL REFERENCES organizzazione (id_organizzazione), time_generato TIMESTAMP WITH TIME ZONE NOT NULL, scadenza_token
 TIMESTAMP WITH TIME ZONE NOT NULL);*/
 
 @Entity
 @Table(name="invito")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
