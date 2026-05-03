@@ -64,6 +64,8 @@ public class Evento {
 	@Column(nullable = false)
 	private ZonedDateTime timeNotifica;
 	
+	
+	@Builder.Default
 	private boolean notificato = false;
 	
 }

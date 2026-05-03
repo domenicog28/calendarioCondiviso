@@ -54,6 +54,7 @@ public class Utente {
 	@Column(nullable=false, length=50)
 	private String cognome;
 	
+	@Builder.Default
 	private boolean verificato = false;
 	
 	private int tokenVerifica;

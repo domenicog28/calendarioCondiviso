@@ -44,6 +44,7 @@ public class Organizzazione {
 	@Column(nullable=false)
 	private String descrizione;
 	
+	@Builder.Default
 	private boolean verificata = false;
 	
 	private int tokenVerifica;
