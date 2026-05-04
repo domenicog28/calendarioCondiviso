@@ -70,7 +70,7 @@ public class UtenteRepositoryTest {
 	@Order(2)
 	void ricercaPerToken() {
 
-		Utente cercato = utenteRepository.findByEmail("utente@test.it")
+		Utente cercato = utenteRepository.findByTokenVerifica(123456)
 				.orElseThrow(()-> new RuntimeException("Utente non trovato"));
 		
 		assertEquals(123456, cercato.getTokenVerifica());

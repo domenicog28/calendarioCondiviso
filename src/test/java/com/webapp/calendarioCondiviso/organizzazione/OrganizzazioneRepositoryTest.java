@@ -61,7 +61,7 @@ public class OrganizzazioneRepositoryTest {
 	@Order(2)
 	void ricercaPerToken() {
 
-		Organizzazione cercata = organizzazioneRepository.findByEmail("prova@test.it")
+		Organizzazione cercata = organizzazioneRepository.findByTokenVerifica(123456)
 				.orElseThrow(() -> new RuntimeException("Organizzazione non trovata"));
 
 		assertEquals(123456, cercata.getTokenVerifica());
