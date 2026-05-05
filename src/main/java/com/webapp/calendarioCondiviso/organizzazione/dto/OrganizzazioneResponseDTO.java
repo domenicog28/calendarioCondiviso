@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class OrganizzazioneResponseDTO {
-	
+
 	private UUID idOrganizzazione;
-	
+
 	private String email;
-	
+
 	private String descrizione;
 }
