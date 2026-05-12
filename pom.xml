@@ -50,14 +50,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-docker-compose</artifactId>
-			<version>4.0.6</version>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.5.6</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -69,13 +67,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>4.0.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
-			<version>7.0.5</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -85,7 +81,6 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
     		<artifactId>flyway-core</artifactId>
-    		<version>12.0.3</version>
 		</dependency>
 
 
@@ -94,7 +89,6 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
     		<artifactId>flyway-database-postgresql</artifactId>
-    		<version>12.0.3</version>
     		<scope>runtime</scope>
 		</dependency>
 

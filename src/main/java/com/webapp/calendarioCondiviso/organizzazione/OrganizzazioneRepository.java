@@ -13,4 +13,5 @@ public interface OrganizzazioneRepository extends JpaRepository<Organizzazione, 
 	Optional<Organizzazione> findByEmail (String email);
 	
 	Optional<Organizzazione> findByTokenVerifica (int token);
+	
 }
