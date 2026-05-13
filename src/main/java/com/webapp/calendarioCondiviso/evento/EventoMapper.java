@@ -1,5 +1,7 @@
 package com.webapp.calendarioCondiviso.evento;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,5 +15,7 @@ public interface EventoMapper {
 	Evento toEntity(EventoCreateDTO createDTO);
 	
 	EventoResponseDTO toDto(Evento evento);
+
+	List<EventoResponseDTO> toListDTO(List<Evento> eventi);
 
 }

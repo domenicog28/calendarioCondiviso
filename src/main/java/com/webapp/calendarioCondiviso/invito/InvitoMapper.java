@@ -1,5 +1,7 @@
 package com.webapp.calendarioCondiviso.invito;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,4 +15,6 @@ public interface InvitoMapper {
 	Invito toEntity(InvitoCreateDTO createDTO);
 
 	InvitoResponseDTO toDto(Invito invito);
+	
+	List<InvitoResponseDTO> toListDTO(List<Invito> inviti);
 }

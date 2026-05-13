@@ -1,5 +1,7 @@
 package com.webapp.calendarioCondiviso.utente;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,5 +15,7 @@ public interface UtenteMapper {
 	Utente toEntity(UtenteCreateDTO createDTO);
 	
 	UtenteResponseDTO toDto(Utente utente);
+	
+	List <UtenteResponseDTO> toListDTO (List<Utente> utenti);
 
 }
