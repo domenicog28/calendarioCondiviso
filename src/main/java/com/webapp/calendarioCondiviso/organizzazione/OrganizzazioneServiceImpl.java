@@ -1,9 +1,7 @@
 package com.webapp.calendarioCondiviso.organizzazione;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.webapp.calendarioCondiviso.TokenUtils;
 import com.webapp.calendarioCondiviso.evento.Evento;
 import com.webapp.calendarioCondiviso.evento.EventoMapper;
 import com.webapp.calendarioCondiviso.evento.EventoRepository;
@@ -66,9 +65,9 @@ public class OrganizzazioneServiceImpl implements OrganizzazioneService {
 		
 		organizzazione.setPasswordHash(passwordEncoder.encode(createDto.getPassword()));
 		
-		organizzazione.setTokenVerifica(generaToken());
+		organizzazione.setTokenVerifica(TokenUtils.generaToken());
 		
-		organizzazione.setScadenzaToken(generaScadenzaToken());
+		organizzazione.setScadenzaToken(TokenUtils.generaScadenzaToken());
 		
 		try {
 		
@@ -174,15 +173,5 @@ public class OrganizzazioneServiceImpl implements OrganizzazioneService {
 		return utenteMapper.toListDTO(utenti);
 	}
 	
-	private int generaToken() {
-		Random random = new Random();
-		int numero = 100000 + random.nextInt(900000);
-		return numero;
-	}
-	
-	private ZonedDateTime generaScadenzaToken() {
-		ZonedDateTime scadenza = ZonedDateTime.now(ZoneId.of("Europe/Rome")).plusDays(7);
-		return scadenza;
-	}
 
 }
