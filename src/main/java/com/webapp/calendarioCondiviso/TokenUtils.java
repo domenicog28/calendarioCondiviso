@@ -16,5 +16,11 @@ public class TokenUtils {
 		ZonedDateTime scadenza = ZonedDateTime.now(ZoneId.of("Europe/Rome")).plusDays(7);
 		return scadenza;
 	}
+	
+	public static ZonedDateTime generaScadenzaTokenInvito() {
+		
+		ZonedDateTime scadenza = ZonedDateTime.now(ZoneId.of("Europe/Rome")).plusHours(1);
+		return scadenza;
+	}
 
 }
