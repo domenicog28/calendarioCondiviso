@@ -1,6 +1,6 @@
 package com.webapp.calendarioCondiviso.exception;
 
-public class UtenteNotFoundException extends RuntimeException {
+public class UtenteNotFoundException extends ResourceNotFoundException {
 	
 	public UtenteNotFoundException(String message) {
 		
