@@ -78,10 +78,6 @@ public class OrganizzazioneServiceImpl implements OrganizzazioneService {
 			throw new DuplicateEmailException("Email: "+organizzazione.getEmail()+" è già utilizzata!");
 		}
 		
-		
-		
-		
-		
 	}
 
 	@Override
