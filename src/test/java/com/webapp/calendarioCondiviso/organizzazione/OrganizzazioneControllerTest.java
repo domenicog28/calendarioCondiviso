@@ -25,6 +25,7 @@ import com.webapp.calendarioCondiviso.evento.dto.EventoResponseDTO;
 import com.webapp.calendarioCondiviso.exception.DuplicateEmailException;
 import com.webapp.calendarioCondiviso.exception.OrganizzazioneNotFoundException;
 import com.webapp.calendarioCondiviso.organizzazione.dto.OrganizzazioneCreateDTO;
+import com.webapp.calendarioCondiviso.organizzazione.dto.OrganizzazioneResponseDTO;
 import com.webapp.calendarioCondiviso.organizzazione.dto.OrganizzazioneUpdateDTO;
 import com.webapp.calendarioCondiviso.utente.dto.UtenteResponseDTO;
 
@@ -53,7 +54,7 @@ public class OrganizzazioneControllerTest {
 		
 		
 		
-		this.mockMvc.perform(MockMvcRequestBuilders.post("/registrazione")
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/organizzazioni/registrazione")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json))
 				.andExpect(MockMvcResultMatchers.status().isCreated())
@@ -78,7 +79,7 @@ public class OrganizzazioneControllerTest {
 		
 		doThrow(DuplicateEmailException.class).when(organizzazioneService).inserisciOrganizzazione(any(OrganizzazioneCreateDTO.class));
 		
-		this.mockMvc.perform(MockMvcRequestBuilders.post("/registrazione")
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/organizzazioni/registrazione")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json))
 				.andExpect(MockMvcResultMatchers.status().isConflict())
@@ -102,10 +103,10 @@ public class OrganizzazioneControllerTest {
 		
 		
 		
-		this.mockMvc.perform(MockMvcRequestBuilders.put("/modifica/{uuid}", uuid)
+		this.mockMvc.perform(MockMvcRequestBuilders.put("/organizzazioni/modifica/{uuid}", uuid)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json))
-				.andExpect(MockMvcResultMatchers.status().isCreated())
+				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andReturn();
 		
 		verify(organizzazioneService).modificaOrganizzazione(any(UUID.class), any(OrganizzazioneUpdateDTO.class));
@@ -128,7 +129,7 @@ public class OrganizzazioneControllerTest {
 		
 		doThrow(OrganizzazioneNotFoundException.class).when(organizzazioneService).modificaOrganizzazione(any(UUID.class), any(OrganizzazioneUpdateDTO.class));
 		
-		this.mockMvc.perform(MockMvcRequestBuilders.put("/modifica/{uuid}", uuid)
+		this.mockMvc.perform(MockMvcRequestBuilders.put("/organizzazioni/modifica/{uuid}", uuid)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json))
 				.andExpect(MockMvcResultMatchers.status().isNotFound())
@@ -146,7 +147,7 @@ public class OrganizzazioneControllerTest {
 		
 		
 		
-		this.mockMvc.perform(MockMvcRequestBuilders.delete("/elimina/{UUID}", uuid))
+		this.mockMvc.perform(MockMvcRequestBuilders.delete("/organizzazioni/elimina/{uuid}", uuid))
 				.andExpect(MockMvcResultMatchers.status().isNoContent())
 				.andReturn();
 				
@@ -162,7 +163,7 @@ public class OrganizzazioneControllerTest {
 		
 		doThrow(OrganizzazioneNotFoundException.class).when(organizzazioneService).eliminaOrganizzazione(any(UUID.class));
 
-		this.mockMvc.perform(MockMvcRequestBuilders.delete("/elimina/{UUID}", uuid))
+		this.mockMvc.perform(MockMvcRequestBuilders.delete("/organizzazioni/elimina/{uuid}", uuid))
 				.andExpect(MockMvcResultMatchers.status().isNotFound())
 				.andReturn();
 		
@@ -179,7 +180,7 @@ public class OrganizzazioneControllerTest {
 		
 		when(organizzazioneService.cercaEventiOrganizzazione(any(UUID.class))).thenReturn(List.of(new EventoResponseDTO()));
 		
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/{UUID}/eventi", uuid))
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/organizzazioni/{uuid}/eventi", uuid))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(jsonPath("$.length()").value(1))
 				.andReturn();
@@ -195,7 +196,7 @@ public class OrganizzazioneControllerTest {
 		
 		when(organizzazioneService.cercaUtentiOrganizzazione(any(UUID.class))).thenReturn(List.of(new UtenteResponseDTO()));
 		
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/{UUID}/utenti", uuid))
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/organizzazioni/{uuid}/utenti", uuid))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(jsonPath("$.length()").value(1))
 				.andReturn();
@@ -203,6 +204,37 @@ public class OrganizzazioneControllerTest {
 		verify(organizzazioneService).cercaUtentiOrganizzazione(any(UUID.class));
 	}
 	
+	@Test
+	@Order(9)
+	void organizzazioneResponseUUIDOk() throws Exception {
+
+		UUID uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+
+		when(organizzazioneService.cercaPerUUID(any(UUID.class))).thenReturn(new OrganizzazioneResponseDTO());
+
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/organizzazioni/{uuid}", uuid))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andReturn();
+
+		verify(organizzazioneService).cercaPerUUID(uuid);
+
+	}
+	
+	@Test
+	@Order(9)
+	void organizzazioneResponseUUIDError() throws Exception {
+
+		UUID uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+
+		doThrow(OrganizzazioneNotFoundException.class).when(organizzazioneService).cercaPerUUID(any(UUID.class));
+
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/organizzazioni/{uuid}", uuid))
+				.andExpect(MockMvcResultMatchers.status().isNotFound())
+				.andReturn();
+
+		verify(organizzazioneService).cercaPerUUID(uuid);
+
+	}
 	
 	
 	
