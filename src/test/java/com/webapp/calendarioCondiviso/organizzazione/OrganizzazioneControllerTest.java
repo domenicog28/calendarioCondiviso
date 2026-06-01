@@ -216,12 +216,12 @@ public class OrganizzazioneControllerTest {
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andReturn();
 
-		verify(organizzazioneService).cercaPerUUID(uuid);
+		verify(organizzazioneService).cercaPerUUID(any(UUID.class));
 
 	}
 	
 	@Test
-	@Order(9)
+	@Order(10)
 	void organizzazioneResponseUUIDError() throws Exception {
 
 		UUID uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
@@ -232,7 +232,7 @@ public class OrganizzazioneControllerTest {
 				.andExpect(MockMvcResultMatchers.status().isNotFound())
 				.andReturn();
 
-		verify(organizzazioneService).cercaPerUUID(uuid);
+		verify(organizzazioneService).cercaPerUUID(any(UUID.class));
 
 	}
 	
