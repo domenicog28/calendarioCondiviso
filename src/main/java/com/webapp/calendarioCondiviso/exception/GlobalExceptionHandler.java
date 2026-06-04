@@ -30,5 +30,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 		
 	}
+	
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public final ResponseEntity<String> invalidCredentialsHandler(Exception ex){
+		
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+		
+	}
 
 }
