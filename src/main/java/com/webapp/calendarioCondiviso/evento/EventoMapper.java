@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import com.webapp.calendarioCondiviso.evento.dto.EventoCreateDTO;
 import com.webapp.calendarioCondiviso.evento.dto.EventoResponseDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface EventoMapper {
 	
 	@Mapping(target= "idEvento", ignore=true)

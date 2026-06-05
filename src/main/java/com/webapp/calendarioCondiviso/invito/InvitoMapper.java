@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import com.webapp.calendarioCondiviso.invito.dto.InvitoCreateDTO;
 import com.webapp.calendarioCondiviso.invito.dto.InvitoResponseDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface InvitoMapper {
 
 	@Mapping(target = "idToken", ignore = true)

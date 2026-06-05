@@ -15,9 +15,9 @@ spring:
     hibernate:
       ddl-auto: "validate"
 
-  jwt:
-    secret: ${JWT_SECRET}
-    accessTokenExp: ${JWT_ACCESS_TOKEN_EXP}
-    refreshTokenExp: ${JWT_ACCESS_TOKEN_EXP}
+jwt:
+  secret: ${JWT_SECRET}
+  accessTokenExp: ${JWT_ACCESS_TOKEN_EXP}
+  refreshTokenExp: ${JWT_REFRESH_TOKEN_EXP}
    
   

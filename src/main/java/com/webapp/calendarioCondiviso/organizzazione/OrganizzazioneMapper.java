@@ -6,7 +6,7 @@ import org.mapstruct.Mapping;
 import com.webapp.calendarioCondiviso.organizzazione.dto.OrganizzazioneCreateDTO;
 import com.webapp.calendarioCondiviso.organizzazione.dto.OrganizzazioneResponseDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface OrganizzazioneMapper {
 	
 	@Mapping(target = "idOrganizzazione", ignore = true)
