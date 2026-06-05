@@ -25,7 +25,18 @@ services:
    - calendario_network
   volumes:
    - pgadmin_data:/var/lib/pgadmin
-   
+
+ app:
+  build: .
+  ports:
+   - '8080:8080'
+  depends_on:
+   - postgres
+  env_file:
+   - .env
+  networks:
+   - calendario_network
+  
 volumes:
  postgres_data:
  pgadmin_data:

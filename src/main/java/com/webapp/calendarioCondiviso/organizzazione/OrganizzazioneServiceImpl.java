@@ -85,9 +85,9 @@ public class OrganizzazioneServiceImpl implements OrganizzazioneService {
 		Organizzazione organizzazione = organizzazioneRepository.findById(uuid)
 				.orElseThrow(() -> new OrganizzazioneNotFoundException("Organizzazione non trovata"));
 		
-		if (updateDto.getPasswordHash() != null) {
+		if (updateDto.getPassword() != null) {
 			
-			organizzazione.setPasswordHash(passwordEncoder.encode(updateDto.getPasswordHash()));
+			organizzazione.setPasswordHash(passwordEncoder.encode(updateDto.getPassword()));
 			
 		} 
 		

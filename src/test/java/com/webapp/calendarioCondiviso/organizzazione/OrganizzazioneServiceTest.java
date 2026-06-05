@@ -137,7 +137,7 @@ public class OrganizzazioneServiceTest {
 		when(organizzazioneRepository.findById(any(UUID.class))).thenReturn(Optional.of(organizzazione));
 		
 		
-		OrganizzazioneUpdateDTO updateDto = OrganizzazioneUpdateDTO.builder().passwordHash("123Modifica!").descrizione("Squadra Curling").build();
+		OrganizzazioneUpdateDTO updateDto = OrganizzazioneUpdateDTO.builder().password("123Modifica!").descrizione("Squadra Curling").build();
 		
 		
 		when(passwordEncoder.encode(anyString())).thenReturn("123ModificaRiuscita!");
@@ -156,7 +156,7 @@ public class OrganizzazioneServiceTest {
 	void modificaOrganizzazioneNotFound() {
 		UUID uuid = UUID.fromString("00000000-0000-0000-0000-000000000001");
 		
-		OrganizzazioneUpdateDTO updateDto = OrganizzazioneUpdateDTO.builder().passwordHash("123Modifica!").descrizione("Squadra Curling").build();
+		OrganizzazioneUpdateDTO updateDto = OrganizzazioneUpdateDTO.builder().password("123Modifica!").descrizione("Squadra Curling").build();
 
 		when(organizzazioneRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 		

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class OrganizzazioneUpdateDTO {
 	
 	
-	private String passwordHash;
+	private String password;
 	
 	private String descrizione;
 

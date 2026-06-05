@@ -94,7 +94,7 @@ public class OrganizzazioneControllerTest {
 		UUID uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
 		
 		OrganizzazioneUpdateDTO updateDto = OrganizzazioneUpdateDTO.builder()
-				.passwordHash("prova1234")
+				.password("prova1234")
 				.descrizione("descrizione di prova 2").build();
 		
 		ObjectMapper objectMapper = new ObjectMapper();
