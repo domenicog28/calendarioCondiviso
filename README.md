@@ -111,7 +111,7 @@ Per gli endpoints diversi da:
 è necessario effettuare il login, recuperare dal Header della risposta di login l'access Token e impostarlo nel Header della nuova richiesta (Key: Authorization value: Bearer + accessToken)
 
 ### Test API
-Gli endpoints possono essere testati tramite Postman
+Gli endpoints possono essere testati tramite Postman su `http://localhost:8080`
 
 ### Request Body
 `/auth/login`
