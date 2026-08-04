@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.webapp.calendarioCondiviso.TokenUtils;
+import com.webapp.calendarioCondiviso.email.EmailSenderService;
 import com.webapp.calendarioCondiviso.evento.Evento;
 import com.webapp.calendarioCondiviso.evento.EventoMapper;
 import com.webapp.calendarioCondiviso.evento.EventoRepository;
@@ -55,6 +56,9 @@ public class OrganizzazioneServiceImpl implements OrganizzazioneService {
 	@Autowired
 	UtenteMapper utenteMapper;
 	
+	@Autowired
+	EmailSenderService emailService;
+	
 	
 	@Autowired
 	OrganizzazioneRepository organizzazioneRepository;
@@ -72,6 +76,8 @@ public class OrganizzazioneServiceImpl implements OrganizzazioneService {
 		try {
 		
 			organizzazioneRepository.save(organizzazione);
+			
+			emailService.sendTokenEmail(organizzazione.getEmail(), ""+organizzazione.getTokenVerifica());
 			
 		} catch (DataIntegrityViolationException msg) {
 			
