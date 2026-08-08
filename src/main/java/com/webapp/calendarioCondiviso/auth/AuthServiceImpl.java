@@ -134,59 +134,7 @@ public class AuthServiceImpl implements AuthService {
 				
 		}
 	}
-	/*
-	@Override
-	public String[] modificaVerificaEmail (UUID uuid, String codiceVerifica) {
 		
-		String[] token = new String [2];
-		
-		Optional<Organizzazione> organizzazione = organizzazioneRepository.findById(uuid);
-		
-		if (organizzazione.isPresent()) {
-			
-			Organizzazione org = organizzazione.get();
-			
-			if (Integer.toString(org.getTokenVerifica()).equals(codiceVerifica)){
-				
-				organizzazioneRepository.impostaVerificato(uuid);
-				
-				
-				
-				token[0] = jwtService.generateAccessToken(org.getIdOrganizzazione(), Ruolo.ORGANIZZAZIONE);
-				token[1] = jwtService.generateRefreshToken(org.getIdOrganizzazione());
-				
-				return token;
-				
-			} else {
-				
-				throw new CodiceVerificaErratoException("Codice verifica email errato");
-				
-			}
-			
-		} else {
-			
-			Optional<Utente> utente = utenteRepository.findById(uuid);
-			
-			if (utente.isPresent()) {
-				//da modificare dopo aver aggiunto la query di impostaVerificato su UtenteRepository
-				
-				System.out.println("Utente Presente");
-				
-				return token;
-				
-			} else {
-				
-				throw new ResourceNotFoundException("errore");
-				
-			}
-			
-		}
-		
-	}
-	*/
-	
-	
-	
 }
 
 				

@@ -48,9 +48,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(CodiceVerificaErratoException.class)
-	public final ResponseEntity<Map<String, Boolean>> codiceVerificaErratoHandler (Exception ex){
+	public final ResponseEntity<String> codiceVerificaErratoHandler (Exception ex){
 		
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("codiceErrato", true));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 	}
 
 }
