@@ -1,6 +1,9 @@
 package com.webapp.calendarioCondiviso.exception;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,6 +39,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
 		
+	}
+	
+	@ExceptionHandler(EmailNonVerificataException.class)
+	public final ResponseEntity<String> emailNonVerificataHandler (Exception ex){
+		
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+	}
+	
+	@ExceptionHandler(CodiceVerificaErratoException.class)
+	public final ResponseEntity<Map<String, Boolean>> codiceVerificaErratoHandler (Exception ex){
+		
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("codiceErrato", true));
 	}
 
 }

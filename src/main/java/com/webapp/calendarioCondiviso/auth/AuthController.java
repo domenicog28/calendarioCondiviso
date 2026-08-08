@@ -38,5 +38,12 @@ public class AuthController {
 				.header(HttpHeaders.AUTHORIZATION,"Bearer " + accessToken)
 				.body("Refresh eseguito con successo!");
 	}
+	/*
+	@PostMapping ( path = "/verifica-email", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> verificaEmail(@RequestBody String codiceVerifica){
+		
+		String accessToken = authService.modificaVerificaEmail(null, codiceVerifica)
+		
+	}*/
 
 }
