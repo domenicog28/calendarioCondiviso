@@ -1,6 +1,11 @@
 package com.webapp.calendarioCondiviso.email;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.http.MediaType;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.PostMapping;
@@ -17,11 +22,17 @@ public class EmailController {
 	EmailSenderServiceImpl emailService;
 	
 	
-	/*@PostMapping ( path = "/verifica-email", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> verificaEmail(@RequestBody String codiceVerifica, String email){
+	
+	@PostMapping ( path = "/verifica-email", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> verificaEmail(@RequestBody VerificaEmailDto verificaDto){
 		
-		String[] Token = emailService.modificaVerificaEmail(email, codiceVerifica);
+		String[] token = emailService.modificaVerificaEmail(verificaDto.email(), verificaDto.codiceVerifica());
 		
-	}*/
+		return ResponseEntity.ok()
+				.header(HttpHeaders.AUTHORIZATION,"Bearer " + token[0])
+				.header("X-Refresh-Token", token[1])
+				.body("Login effettuato con successo!");
+		
+	}
 
 }

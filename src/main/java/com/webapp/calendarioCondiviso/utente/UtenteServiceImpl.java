@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.webapp.calendarioCondiviso.TokenUtils;
+import com.webapp.calendarioCondiviso.email.EmailSenderService;
 import com.webapp.calendarioCondiviso.evento.Evento;
 import com.webapp.calendarioCondiviso.evento.EventoMapper;
 import com.webapp.calendarioCondiviso.evento.EventoRepository;
@@ -42,6 +43,9 @@ public class UtenteServiceImpl implements UtenteService {
 	
 	@Autowired
 	EventoMapper eventoMapper;
+	
+	@Autowired
+	EmailSenderService emailService;
 
 	@Override
 	public void inserisciUtente(UUID uuidOrganizzazione, UtenteCreateDTO createDto) {
@@ -61,6 +65,8 @@ public class UtenteServiceImpl implements UtenteService {
 		try {
 			
 			utenteRepository.save(utente);
+			
+			emailService.sendTokenEmail(utente.getEmail(), ""+utente.getTokenVerifica());
 			
 		} catch (DataIntegrityViolationException msg) {
 			

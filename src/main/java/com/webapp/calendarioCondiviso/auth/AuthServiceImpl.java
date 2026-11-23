@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import com.webapp.calendarioCondiviso.utente.Utente;
 import com.webapp.calendarioCondiviso.utente.UtenteRepository;
 
 @Service
+@Profile("!test")
 public class AuthServiceImpl implements AuthService {
 
 	@Autowired
@@ -69,21 +71,29 @@ public class AuthServiceImpl implements AuthService {
 			Optional<Utente> utente = utenteRepository.findByEmail(credenziali.email());
 
 			if (utente.isPresent()) {
-
-				Utente ut = utente.get();
-
-				if (passwordEncoder.matches(credenziali.password(), ut.getPasswordHash())) {
-
-					token[0] = jwtService.generateAccessToken(ut.getIdUtente(), Ruolo.UTENTE,
-							ut.getOrganizzazione().getIdOrganizzazione());
-					token[1] = jwtService.generateRefreshToken(ut.getIdUtente());
-
-					return token;
+				
+				if (!utente.get().isVerificato()) {
+					
+					throw new EmailNonVerificataException("Email non verificata!");
+					
 				} else {
+					
+					Utente ut = utente.get();
 
-					throw new InvalidCredentialsException("Le credenziali inserite non sono corrette!");
+					if (passwordEncoder.matches(credenziali.password(), ut.getPasswordHash())) {
 
-				}
+						token[0] = jwtService.generateAccessToken(ut.getIdUtente(), Ruolo.UTENTE,
+								ut.getOrganizzazione().getIdOrganizzazione());
+						token[1] = jwtService.generateRefreshToken(ut.getIdUtente());
+
+						return token;
+					} else {
+
+						throw new InvalidCredentialsException("Le credenziali inserite non sono corrette!");
+
+					}
+					
+				}		
 
 			} else {
 

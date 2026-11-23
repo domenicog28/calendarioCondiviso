@@ -1,5 +1,7 @@
 package com.webapp.calendarioCondiviso.email;
 
+
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,20 +50,18 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 		
 		String[] token = new String [2];
 		
-		Optional<Organizzazione> organizzazione = organizzazioneRepository.findByEmail(email);
+		Optional<Organizzazione> org = organizzazioneRepository.findByEmail(email);
 		
-		if (organizzazione.isPresent()) {
+		if (org.isPresent()) {
 			
-			Organizzazione org = organizzazione.get();
+			Organizzazione organizzazione = org.get();
 			
-			if (Integer.toString(org.getTokenVerifica()).equals(codiceVerifica)){
+			if (organizzazione.getTokenVerifica() == Integer.parseInt(codiceVerifica)) {
 				
 				organizzazioneRepository.impostaVerificato(email);
 				
-				
-				
-				token[0] = jwtService.generateAccessToken(org.getIdOrganizzazione(), Ruolo.ORGANIZZAZIONE);
-				token[1] = jwtService.generateRefreshToken(org.getIdOrganizzazione());
+				token[0] = jwtService.generateAccessToken(organizzazione.getIdOrganizzazione(), Ruolo.ORGANIZZAZIONE);
+				token[1] = jwtService.generateRefreshToken(organizzazione.getIdOrganizzazione());
 				
 				return token;
 				
@@ -73,18 +73,30 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 			
 		} else {
 			
-			Optional<Utente> utente = utenteRepository.findByEmail(email);
+			Optional<Utente> ut = utenteRepository.findByEmail(email);
 			
-			if (utente.isPresent()) {
-				//da modificare dopo aver aggiunto la query di impostaVerificato su UtenteRepository
+			if (ut.isPresent()) {
 				
-				System.out.println("Utente Presente");
+				Utente utente = ut.get();
 				
-				return token;
+				if(utente.getTokenVerifica() == Integer.parseInt(codiceVerifica)) {
+					
+					utenteRepository.impostaVerificato(email);
+					
+					token[0] = jwtService.generateAccessToken(utente.getIdUtente(), Ruolo.UTENTE);
+					token[1] = jwtService.generateRefreshToken(utente.getIdUtente());
+					
+					return token;
+					
+				} else {
+					
+					throw new CodiceVerificaErratoException("Codice verifica email errato");
+					
+				}
 				
 			} else {
 				
-				throw new ResourceNotFoundException("errore");
+				throw new ResourceNotFoundException("L'email inserita non è presente nel database!");
 				
 			}
 			

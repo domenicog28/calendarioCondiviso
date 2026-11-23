@@ -8,6 +8,7 @@ import com.webapp.calendarioCondiviso.invito.InvitoRepositoryTest;
 import com.webapp.calendarioCondiviso.organizzazione.OrganizzazioneRepositoryTest;
 import com.webapp.calendarioCondiviso.utente.UtenteRepositoryTest;
 
+
 @Suite
 @SelectClasses({
 	OrganizzazioneRepositoryTest.class,

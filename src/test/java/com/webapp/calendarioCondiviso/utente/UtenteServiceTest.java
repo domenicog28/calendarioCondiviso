@@ -25,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.webapp.calendarioCondiviso.email.EmailSenderService;
 import com.webapp.calendarioCondiviso.evento.Evento;
 import com.webapp.calendarioCondiviso.evento.EventoMapper;
 import com.webapp.calendarioCondiviso.evento.EventoRepository;
@@ -56,6 +57,9 @@ public class UtenteServiceTest {
 
 	@Mock
 	UtenteMapper utenteMapper;
+	
+	@Mock
+	EmailSenderService emailService;
 	
 	@InjectMocks
 	UtenteServiceImpl utenteServiceImpl;
@@ -91,6 +95,8 @@ public class UtenteServiceTest {
 		when(passwordEncoder.encode(anyString())).thenReturn("123Prova!");
 
 		utenteServiceImpl.inserisciUtente(uuid, createDto);
+		
+		verify(emailService).sendTokenEmail(anyString(), anyString());
 		
 		verify(organizzazioneRepository).findById(any(UUID.class));
 		

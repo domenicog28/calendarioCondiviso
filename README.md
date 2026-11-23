@@ -3,6 +3,7 @@
 ## Descrizione
 
 Backend di una web-app per un Calendario condiviso. Offre la possibilità di registrare Organizzazioni e tramite invito di creare nuovi Utenti. Organizzazioni e Utenti possono gestire eventi con creazione, modifica ed eliminazione di un nuovo evento. Gli eventi possono essere personali (creati dall'utente) e di team (creati solo dall'organizzazione per tutti gli utenti). Il progetto è sviluppato seguendo il pattern **TDD (Test-Driven Development)** con test di integrazione sui Repository tramite **Testcontainers** e unit test sui Service tramite **Mockito**.
+Inoltre è presente un sistema per l'invio, tramite mail, di un token di verifica.
 
 ## Tech e Stack
 
@@ -17,6 +18,7 @@ Backend di una web-app per un Calendario condiviso. Offre la possibilità di reg
 - Mockito
 - Testcontainers
 - JWT
+- Spring Security 
 
 ## Prerequisiti
 
@@ -28,7 +30,7 @@ Da console
 
 ```bash
 # 1. Clona la repository
-git clone https://github.com/tuouser/calendarioCondiviso.git
+git clone https://github.com/domenicog28/calendarioCondiviso.git
 
 # 2. Copia il file delle variabili d'ambiente e modifica il .env con i tuoi valori
 cp .env.example .env
@@ -109,6 +111,13 @@ Per gli endpoints diversi da:
 | POST | /utenti/registrazione/{uuidOrganizzazione} |
 
 è necessario effettuare il login, recuperare dal Header della risposta di login l'access Token e impostarlo nel Header della nuova richiesta (Key: Authorization value: Bearer + accessToken)
+
+## Verifica email
+endpoint per verificare l'email di registrazione:
+
+| Metodo | URL |
+| --- | --- |
+| POST | /auth/verifica-email |
 
 ### Test API
 Gli endpoints possono essere testati tramite Postman su `http://localhost:8080`
@@ -196,6 +205,22 @@ Gli endpoints possono essere testati tramite Postman su `http://localhost:8080`
 ```json
 {
     "idOrganizzazione": "uuid-organizzazione"
+}
+```
+
+`/auth/login`
+```json
+{
+    "email": "email_registrata",
+    "password": "password"
+}
+```
+
+`/auth/verifica-email`
+```json
+{
+    "codiceVerifica": "codice_ricevuto_per_mail",
+    "email": "email_registrata"
 }
 ```
 

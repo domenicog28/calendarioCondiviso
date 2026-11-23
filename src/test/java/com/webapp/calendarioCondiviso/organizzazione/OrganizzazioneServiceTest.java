@@ -30,6 +30,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.webapp.calendarioCondiviso.email.EmailSenderService;
 import com.webapp.calendarioCondiviso.evento.Evento;
 import com.webapp.calendarioCondiviso.evento.EventoMapper;
 import com.webapp.calendarioCondiviso.evento.EventoRepository;
@@ -77,6 +78,9 @@ public class OrganizzazioneServiceTest {
 	@Mock
 	OrganizzazioneMapper organizzazioneMapper;
 	
+	@Mock
+	EmailSenderService emailService;
+	
 	@InjectMocks
 	OrganizzazioneServiceImpl organizzazioneServiceImpl;
 	
@@ -103,6 +107,8 @@ public class OrganizzazioneServiceTest {
 		when(organizzazioneMapper.toEntity(any(OrganizzazioneCreateDTO.class))).thenReturn(organizzazione);
 		
 		organizzazioneServiceImpl.inserisciOrganizzazione(createDto);
+		
+		verify(emailService).sendTokenEmail(anyString(), anyString());
 		
 		verify(organizzazioneRepository).save(organizzazioneCaptor.capture());
 		
