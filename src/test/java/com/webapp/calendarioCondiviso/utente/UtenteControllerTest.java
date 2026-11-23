@@ -14,13 +14,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webapp.calendarioCondiviso.auth.SecurityConfigTest;
 import com.webapp.calendarioCondiviso.evento.dto.EventoResponseDTO;
 import com.webapp.calendarioCondiviso.exception.DuplicateEmailException;
 import com.webapp.calendarioCondiviso.exception.UtenteNotFoundException;
@@ -29,6 +32,8 @@ import com.webapp.calendarioCondiviso.utente.dto.UtenteResponseDTO;
 import com.webapp.calendarioCondiviso.utente.dto.UtenteUpdateDTO;
 
 @WebMvcTest(value = UtenteController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@Import(SecurityConfigTest.class)
+@ActiveProfiles("test")
 public class UtenteControllerTest {
 	
 	@Autowired

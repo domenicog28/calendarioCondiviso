@@ -34,7 +34,7 @@ public class OrganizzazioneController {
 		
 		organizzazioneService.inserisciOrganizzazione(createDto);
 		
-		return new ResponseEntity<>("Organizzazione registrata con successo!", HttpStatus.CREATED);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	@PutMapping(path = "/modifica/{uuid}", consumes = MediaType.APPLICATION_JSON_VALUE)

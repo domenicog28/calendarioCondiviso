@@ -4,18 +4,23 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.webapp.calendarioCondiviso.auth.jwt.JwtService;
 import com.webapp.calendarioCondiviso.auth.jwt.Ruolo;
+//import com.webapp.calendarioCondiviso.exception.CodiceVerificaErratoException;
+import com.webapp.calendarioCondiviso.exception.EmailNonVerificataException;
 import com.webapp.calendarioCondiviso.exception.InvalidCredentialsException;
+//import com.webapp.calendarioCondiviso.exception.ResourceNotFoundException;
 import com.webapp.calendarioCondiviso.organizzazione.Organizzazione;
 import com.webapp.calendarioCondiviso.organizzazione.OrganizzazioneRepository;
 import com.webapp.calendarioCondiviso.utente.Utente;
 import com.webapp.calendarioCondiviso.utente.UtenteRepository;
 
 @Service
+@Profile("!test")
 public class AuthServiceImpl implements AuthService {
 
 	@Autowired
@@ -38,20 +43,27 @@ public class AuthServiceImpl implements AuthService {
 		Optional<Organizzazione> organizzazione = organizzazioneRepository.findByEmail(credenziali.email());
 
 		if (organizzazione.isPresent()) {
-
-			Organizzazione org = organizzazione.get();
-
-			if (passwordEncoder.matches(credenziali.password(), org.getPasswordHash())) {
-
-				token[0] = jwtService.generateAccessToken(org.getIdOrganizzazione(), Ruolo.ORGANIZZAZIONE);
-				token[1] = jwtService.generateRefreshToken(org.getIdOrganizzazione());
-
-				return token;
-
+			
+			if (!organizzazione.get().isVerificata()) {
+				
+				throw new EmailNonVerificataException("Email non verificata!");
+				
 			} else {
 
-				throw new InvalidCredentialsException("Le credenziali inserite non sono corrette!");
-
+				Organizzazione org = organizzazione.get();
+	
+				if (passwordEncoder.matches(credenziali.password(), org.getPasswordHash())) {
+	
+					token[0] = jwtService.generateAccessToken(org.getIdOrganizzazione(), Ruolo.ORGANIZZAZIONE);
+					token[1] = jwtService.generateRefreshToken(org.getIdOrganizzazione());
+	
+					return token;
+	
+				} else {
+	
+					throw new InvalidCredentialsException("Le credenziali inserite non sono corrette!");
+	
+				}
 			}
 
 		} else {
@@ -59,21 +71,29 @@ public class AuthServiceImpl implements AuthService {
 			Optional<Utente> utente = utenteRepository.findByEmail(credenziali.email());
 
 			if (utente.isPresent()) {
-
-				Utente ut = utente.get();
-
-				if (passwordEncoder.matches(credenziali.password(), ut.getPasswordHash())) {
-
-					token[0] = jwtService.generateAccessToken(ut.getIdUtente(), Ruolo.UTENTE,
-							ut.getOrganizzazione().getIdOrganizzazione());
-					token[1] = jwtService.generateRefreshToken(ut.getIdUtente());
-
-					return token;
+				
+				if (!utente.get().isVerificato()) {
+					
+					throw new EmailNonVerificataException("Email non verificata!");
+					
 				} else {
+					
+					Utente ut = utente.get();
 
-					throw new InvalidCredentialsException("Le credenziali inserite non sono corrette!");
+					if (passwordEncoder.matches(credenziali.password(), ut.getPasswordHash())) {
 
-				}
+						token[0] = jwtService.generateAccessToken(ut.getIdUtente(), Ruolo.UTENTE,
+								ut.getOrganizzazione().getIdOrganizzazione());
+						token[1] = jwtService.generateRefreshToken(ut.getIdUtente());
+
+						return token;
+					} else {
+
+						throw new InvalidCredentialsException("Le credenziali inserite non sono corrette!");
+
+					}
+					
+				}		
 
 			} else {
 
@@ -124,10 +144,7 @@ public class AuthServiceImpl implements AuthService {
 				
 		}
 	}
-	
-	
-	
-	
+		
 }
 
 				
