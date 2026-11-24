@@ -2,8 +2,9 @@
 
 ## Descrizione
 
-Backend di una web-app per un Calendario condiviso. Offre la possibilità di registrare Organizzazioni e tramite invito di creare nuovi Utenti. Organizzazioni e Utenti possono gestire eventi con creazione, modifica ed eliminazione di un nuovo evento. Gli eventi possono essere personali (creati dall'utente) e di team (creati solo dall'organizzazione per tutti gli utenti). Il progetto è sviluppato seguendo il pattern **TDD (Test-Driven Development)** con test di integrazione sui Repository tramite **Testcontainers** e unit test sui Service tramite **Mockito**.
-Inoltre è presente un sistema per l'invio, tramite mail, di un token di verifica.
+Backend di una web-app per un Calendario condiviso. Offre la possibilità di registrare Organizzazioni e tramite invito di creare nuovi Utenti. Organizzazioni e Utenti possono gestire eventi con creazione, modifica ed eliminazione di un nuovo evento. Gli eventi possono essere personali (creati dall'utente) o di team (creati solo dall'organizzazione per tutti gli utenti).<br>
+Il progetto è sviluppato seguendo il pattern **TDD (Test-Driven Development)** con test di integrazione sui Repository tramite **Testcontainers** e unit test sui Service tramite **Mockito**.<br>
+È inoltre implementato un sistema di autenticazione e autorizzazione degli endpoint basato su **Spring Security e JWT**, che garantisce l'accesso alle risorse in funzione dei ruoli e dei permessi degli utenti. Il sistema prevede anche un meccanismo di verifica dell'identità tramite invio di token di verifica via email.
 
 ## Tech e Stack
 
