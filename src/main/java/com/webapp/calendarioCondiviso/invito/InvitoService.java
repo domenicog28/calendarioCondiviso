@@ -7,7 +7,7 @@ import com.webapp.calendarioCondiviso.invito.dto.InvitoResponseDTO;
 
 public interface InvitoService {
 	
-	public void inserisciInvito (InvitoCreateDTO createDto);
+	public InvitoResponseDTO inserisciInvito (InvitoCreateDTO createDto);
 	
 	public InvitoResponseDTO verificaToken(UUID uuid);
 	

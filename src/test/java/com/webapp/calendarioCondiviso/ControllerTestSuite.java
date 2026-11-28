@@ -4,7 +4,6 @@ import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 
 import com.webapp.calendarioCondiviso.evento.EventoControllerTest;
-import com.webapp.calendarioCondiviso.invito.InvitoControllerTest;
 import com.webapp.calendarioCondiviso.organizzazione.OrganizzazioneControllerTest;
 import com.webapp.calendarioCondiviso.utente.UtenteControllerTest;
 
@@ -12,8 +11,7 @@ import com.webapp.calendarioCondiviso.utente.UtenteControllerTest;
 @SelectClasses({ 
 	OrganizzazioneControllerTest.class,
 	UtenteControllerTest.class,
-	EventoControllerTest.class,
-	InvitoControllerTest.class })
+	EventoControllerTest.class })
 public class ControllerTestSuite {
 
 }

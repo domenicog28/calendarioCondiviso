@@ -29,7 +29,7 @@ public class InvitoServiceImpl implements InvitoService{
 	InvitoRepository invitoRepository;
 
 	@Override
-	public void inserisciInvito(InvitoCreateDTO createDto) {
+	public InvitoResponseDTO inserisciInvito(InvitoCreateDTO createDto) {
 
 		Organizzazione organizzazione = organizzazioneRepository.findById(createDto.getIdOrganizzazione())
 				.orElseThrow(()-> new OrganizzazioneNotFoundException("Organizzazione non trovata!"));
@@ -43,6 +43,10 @@ public class InvitoServiceImpl implements InvitoService{
 		invito.setScadenzaToken(TokenUtils.generaScadenzaTokenInvito());
 		
 		invitoRepository.save(invito);
+		
+		return invitoMapper.toDto(invito);
+		
+		
 		
 	}
 

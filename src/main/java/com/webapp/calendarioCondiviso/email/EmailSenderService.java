@@ -2,7 +2,9 @@ package com.webapp.calendarioCondiviso.email;
 
 public interface EmailSenderService{
 	
-	void sendTokenEmail (String to, String token);
+	public void sendTokenEmail (String to, String token);
 	
 	public String[] modificaVerificaEmail (String email, String codiceVerifica);
+	
+	public Boolean sendNewToken (String to);
 }

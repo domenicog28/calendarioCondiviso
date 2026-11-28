@@ -2,16 +2,21 @@ package com.webapp.calendarioCondiviso.email;
 
 
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.webapp.calendarioCondiviso.TokenUtils;
 import com.webapp.calendarioCondiviso.auth.jwt.JwtService;
 import com.webapp.calendarioCondiviso.auth.jwt.Ruolo;
 import com.webapp.calendarioCondiviso.exception.CodiceVerificaErratoException;
+import com.webapp.calendarioCondiviso.exception.CodiceVerificaExpiredException;
 import com.webapp.calendarioCondiviso.exception.ResourceNotFoundException;
 import com.webapp.calendarioCondiviso.organizzazione.Organizzazione;
 import com.webapp.calendarioCondiviso.organizzazione.OrganizzazioneRepository;
@@ -52,39 +57,22 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 		
 		Optional<Organizzazione> org = organizzazioneRepository.findByEmail(email);
 		
+		Boolean scaduto = false;
+		
 		if (org.isPresent()) {
 			
 			Organizzazione organizzazione = org.get();
 			
-			if (organizzazione.getTokenVerifica() == Integer.parseInt(codiceVerifica)) {
-				
-				organizzazioneRepository.impostaVerificato(email);
-				
-				token[0] = jwtService.generateAccessToken(organizzazione.getIdOrganizzazione(), Ruolo.ORGANIZZAZIONE);
-				token[1] = jwtService.generateRefreshToken(organizzazione.getIdOrganizzazione());
-				
-				return token;
-				
-			} else {
-				
-				throw new CodiceVerificaErratoException("Codice verifica email errato");
-				
-			}
+			scaduto = ZonedDateTime.now(ZoneId.of("Europe/Rome")).isAfter(organizzazione.getScadenzaToken());
 			
-		} else {
-			
-			Optional<Utente> ut = utenteRepository.findByEmail(email);
-			
-			if (ut.isPresent()) {
+			if (!scaduto) {
 				
-				Utente utente = ut.get();
-				
-				if(utente.getTokenVerifica() == Integer.parseInt(codiceVerifica)) {
+				if (organizzazione.getTokenVerifica() == Integer.parseInt(codiceVerifica)) {
 					
-					utenteRepository.impostaVerificato(email);
+					organizzazioneRepository.impostaVerificato(email);
 					
-					token[0] = jwtService.generateAccessToken(utente.getIdUtente(), Ruolo.UTENTE);
-					token[1] = jwtService.generateRefreshToken(utente.getIdUtente());
+					token[0] = jwtService.generateAccessToken(organizzazione.getIdOrganizzazione(), Ruolo.ORGANIZZAZIONE);
+					token[1] = jwtService.generateRefreshToken(organizzazione.getIdOrganizzazione());
 					
 					return token;
 					
@@ -96,6 +84,47 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 				
 			} else {
 				
+				throw new CodiceVerificaExpiredException ("Codice di verifica email scaduto");
+				
+			}
+			
+			
+			
+		} else {
+			
+			Optional<Utente> ut = utenteRepository.findByEmail(email);
+			
+			if (ut.isPresent()) {
+				
+				Utente utente = ut.get();
+				
+				scaduto = ZonedDateTime.now(ZoneId.of("Europe/Rome")).isAfter(utente.getScadenzaToken());
+				
+				if (!scaduto) {
+					
+					if(utente.getTokenVerifica() == Integer.parseInt(codiceVerifica)) {
+						
+						utenteRepository.impostaVerificato(email);
+						
+						token[0] = jwtService.generateAccessToken(utente.getIdUtente(), Ruolo.UTENTE);
+						token[1] = jwtService.generateRefreshToken(utente.getIdUtente());
+						
+						return token;
+						
+					} else {
+						
+						throw new CodiceVerificaErratoException("Codice verifica email errato");
+						
+					}
+					
+				} else {
+					
+					throw new CodiceVerificaExpiredException ("Codice di verifica email scaduto");
+					
+				}
+					
+			} else {
+				
 				throw new ResourceNotFoundException("L'email inserita non è presente nel database!");
 				
 			}
@@ -103,5 +132,58 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 		}
 		
 	}
+
+	@Override
+	@Transactional
+	public Boolean sendNewToken(String to) {
+		
+		Optional<Organizzazione> org = organizzazioneRepository.findByEmail(to);
+		
+		int newToken = TokenUtils.generaToken();
+		
+		ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Europe/Rome"));
+		
+		if (org.isPresent()) {
+			
+			Organizzazione organizzazione = org.get();
+			
+			organizzazione.setTokenVerifica(newToken);
+			
+			organizzazione.setScadenzaToken(now);
+			
+			sendTokenEmail(to, ""+newToken);
+			
+			return true;
+			
+		} else {
+			
+			Optional<Utente> ut = utenteRepository.findByEmail(to);
+			
+			if (ut.isPresent()) {
+				
+				Utente utente = ut.get();
+				
+				utente.setTokenVerifica(newToken);
+				
+				utente.setScadenzaToken(now);
+				
+				sendTokenEmail(to, ""+newToken);
+				
+				return true;
+				
+			} else {
+				
+				throw new ResourceNotFoundException("L'email inserita non è presente nel database!");
+				
+			}
+			
+		}
+		
+		
+
+		
+	}
+	
+	
 
 }

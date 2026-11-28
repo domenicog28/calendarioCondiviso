@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.webapp.calendarioCondiviso.evento.Evento;
+import com.webapp.calendarioCondiviso.invito.Invito;
 import com.webapp.calendarioCondiviso.utente.Utente;
 
 import jakarta.persistence.Column;
@@ -57,4 +58,7 @@ public class Organizzazione {
 	
 	@OneToMany(mappedBy ="organizzazione", fetch=FetchType.LAZY)
 	private List<Evento> eventi;
+	
+	@OneToMany(mappedBy = "organizzazione", fetch=FetchType.LAZY)
+	private List<Invito> invtiti;
 }

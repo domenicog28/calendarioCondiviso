@@ -1,5 +1,7 @@
 package com.webapp.calendarioCondiviso.email;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -34,5 +36,25 @@ public class EmailController {
 				.body("Login effettuato con successo!");
 		
 	}
+	
+	@PostMapping ( path = "/verifica-email/nuovoCodice", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> nuovoCodice (@RequestBody Map<String, Object> body){
+		
+		String email = (String) body.get("email");
+		
+		System.out.println();
+		
+		Boolean inviato = emailService.sendNewToken(email);
+		
+		if (inviato) {
+			
+			return ResponseEntity.ok().body("Il nuovo codice di verifica è stato inviato");
+			
+		}
+		
+		return ResponseEntity.internalServerError().build();
+		
+	}
+	
 
 }

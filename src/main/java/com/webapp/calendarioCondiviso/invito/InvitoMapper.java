@@ -14,6 +14,7 @@ public interface InvitoMapper {
 	@Mapping(target = "idToken", ignore = true)
 	Invito toEntity(InvitoCreateDTO createDTO);
 
+	@Mapping(source = "organizzazione.idOrganizzazione", target = "idOrganizzazione")
 	InvitoResponseDTO toDto(Invito invito);
 	
 	List<InvitoResponseDTO> toListDTO(List<Invito> inviti);

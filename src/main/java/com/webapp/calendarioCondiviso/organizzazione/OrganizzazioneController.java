@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webapp.calendarioCondiviso.auth.jwt.JwtService;
 import com.webapp.calendarioCondiviso.evento.dto.EventoResponseDTO;
+import com.webapp.calendarioCondiviso.invito.InvitoService;
+import com.webapp.calendarioCondiviso.invito.dto.InvitoCreateDTO;
+import com.webapp.calendarioCondiviso.invito.dto.InvitoResponseDTO;
 import com.webapp.calendarioCondiviso.organizzazione.dto.OrganizzazioneCreateDTO;
 import com.webapp.calendarioCondiviso.organizzazione.dto.OrganizzazioneResponseDTO;
 import com.webapp.calendarioCondiviso.organizzazione.dto.OrganizzazioneUpdateDTO;
@@ -28,6 +33,12 @@ public class OrganizzazioneController {
 	
 	@Autowired
 	OrganizzazioneService organizzazioneService;
+	
+	@Autowired
+	InvitoService invitoService;
+	
+	@Autowired
+	JwtService jwtService;
 	
 	@PostMapping(path = "/registrazione", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> registrazioneOrganizzazione(@RequestBody OrganizzazioneCreateDTO createDto) {
@@ -78,6 +89,29 @@ public class OrganizzazioneController {
 		OrganizzazioneResponseDTO responseDto = organizzazioneService.cercaPerUUID(uuid);
 		
 		return new ResponseEntity<> (responseDto, HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/generaInvito")
+	public ResponseEntity<?> generaInvito(@RequestHeader(name="Authorization") String token){
+		
+		String jwtToken = token.substring(7);
+		
+		try {
+			
+			final UUID uuidOrg = UUID.fromString(jwtService.estraiUUID(jwtToken));
+			
+			InvitoCreateDTO invitoCreateDto = new InvitoCreateDTO(uuidOrg);
+			
+			InvitoResponseDTO invito = invitoService.inserisciInvito(invitoCreateDto);
+			
+			return new ResponseEntity<>(invito.getIdToken(), HttpStatus.OK);
+			
+		} catch (IllegalArgumentException ex) {
+			
+			throw new IllegalArgumentException(ex);
+			
+		}		
 		
 	}
 	
